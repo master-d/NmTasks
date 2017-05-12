@@ -1,0 +1,48 @@
+buildscript {
+    repositories {
+    	jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+//webAppDirName = 'frontend/dist'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+repositories {
+	jcenter()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    compile("org.springframework.boot:spring-boot-starter-jetty")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    
+	compile "javax.servlet:jstl:1.2"
+	compile "org.springframework:spring-webmvc:4.3.8.RELEASE"
+	compile "com.h2database:h2:1.4+"
+	
+	//compile "javax.ws.rs:javax.ws.rs-api:2.+"
+	//compile "org.glassfish.jersey.containers:jersey-container-servlet:2.+"
+	//compile "org.glassfish.jersey.media:jersey-media-json-jackson:2.+"
+	
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.+'
+}
+
+jar {
+    baseName = 'nmtasks'
+    version =  '0.1.0'
+}
+
+//processResources.dependsOn('frontend:build')
