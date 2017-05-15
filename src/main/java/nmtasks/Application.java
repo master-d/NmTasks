@@ -1,4 +1,4 @@
-package nmtasks.boot;
+package nmtasks;
 
 import java.util.Arrays;
 

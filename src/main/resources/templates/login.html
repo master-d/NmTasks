@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head('NmTasks Login')"></head>
+<body>
+
+	<nav th:replace="fragments :: nav"></nav>
+	<div class="container">
+		<span th:text="'Message: ' + ${message}"></span>
+	</div>
+
+	<div th:replace="fragments :: footer"></div>
+
+</body>
+</html>

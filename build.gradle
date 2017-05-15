@@ -9,7 +9,6 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 //webAppDirName = 'frontend/dist'
@@ -22,15 +21,14 @@ repositories {
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web") {
-        exclude module: "spring-boot-starter-tomcat"
-    }
-    compile("org.springframework.boot:spring-boot-starter-jetty")
-    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-web") 
+    compile("org.springframework.boot:spring-boot-starter-tomcat")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     
-	compile "javax.servlet:jstl:1.2"
-	compile "org.springframework:spring-webmvc:4.3.8.RELEASE"
 	compile "com.h2database:h2:1.4+"
+	compile "org.webjars:bootstrap:+"
+    //compile "pl.allegro.tech.boot:handlebars-spring-boot-starter:0.2.15"
+    //compile "javax.servlet:jstl:1.2"
 	
 	//compile "javax.ws.rs:javax.ws.rs-api:2.+"
 	//compile "org.glassfish.jersey.containers:jersey-container-servlet:2.+"
