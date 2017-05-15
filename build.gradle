@@ -22,11 +22,14 @@ repositories {
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web") 
-    compile("org.springframework.boot:spring-boot-starter-tomcat")
+    //compile("org.springframework.boot:spring-boot-starter-tomcat")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-    
-	compile "com.h2database:h2:1.4+"
-	compile "org.webjars:bootstrap:+"
+	compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    //compile("org.hibernate:hibernate-entitymanager:5.0.12.Final")
+    //compile("org.hibernate:hibernate-core")
+    //compile "org.hibernate:hibernate-entitymanager:5.2.10.Final"
+	compile("com.h2database:h2")
+	//compile "org.webjars:bootstrap:+"
     //compile "pl.allegro.tech.boot:handlebars-spring-boot-starter:0.2.15"
     //compile "javax.servlet:jstl:1.2"
 	
@@ -35,7 +38,7 @@ dependencies {
 	//compile "org.glassfish.jersey.media:jersey-media-json-jackson:2.+"
 	
     // Use JUnit test framework
-    testImplementation 'junit:junit:4.+'
+    testCompile('junit:junit')
 }
 
 jar {
