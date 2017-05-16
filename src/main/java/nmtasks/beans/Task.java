@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -21,9 +22,10 @@ public class Task {
   private String description;
   @Column
   private Date dueDate;
-  @Column(name="USER_ID")
+  @Column(name="user_id")
   private long userId;
   @OneToOne
+  @JoinColumn(name="id")
   private User user;
   public User getUser() { return this.user; }
   public Task() { }
