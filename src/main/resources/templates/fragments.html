@@ -1,43 +1,49 @@
 <!DOCTYPE html>
 <html>
-<head th:fragment="head(title)">
-<title th:text="${title}">Default Page Title</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-<link rel="stylesheet" th:href="@{/css/nmtasks.css}" href="../../css/main.css" />
+<head th:fragment="head(title)">
+    <title th:text="${title}">Default Page Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" th:href="@{/css/nmtasks.css}" href="../../css/main.css" />
 
 </head>
+
 <body>
-<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse nav-border" th:fragment="nav">
-  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse nav-border" th:fragment="nav">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="navbar-brand" href="/">NmTasks</a>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active" th:if="${session.user == null}">
-        <a id="btn-login-nav" class="nav-link" href="#"><span class="fa fa-user-circle"></span> Login</a>
-      </li>
-      <li class="nav-item active" th:if="${session.user != null}">
-        <a id="btn-logout-nav" class="nav-link" href="/logout"><span class="fa fa-user-circle"></span> Logout</a>
-      </li>
-      <li class="nav-item" th:if="${session.user != null}">
-        <a id="btn-add-task-nav" class="nav-link" href="#"><span class="fa fa-plus"></span> Add Task</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+        <a class="navbar-brand" href="/">NmTasks</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active" th:if="${session.user == null}">
+                    <a id="btn-login-nav" class="nav-link" href="#"><span class="fa fa-user-circle"></span> Login</a>
+                </li>
+                <li class="nav-item" th:if="${session.user != null}">
+                    <a id="btn-logout-nav" class="nav-link" href="/logout"><span class="fa fa-user-circle"></span> Logout</a>
+                </li>
+                <li class="nav-item" th:if="${session.user != null}">
+                    <a id="btn-add-task-nav" class="nav-link" href="#"><span class="fa fa-check-square-o"></span> Show Completed</a>
+                </li>
+                <li class="nav-item" th:if="${session.user != null}">
+                    <a id="btn-add-task-nav" class="nav-link" href="#"><span class="fa fa-square-o"></span> Show Incomplete</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
 
-<div class="footer" th:fragment="footer">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-	<script type="text/javascript" src="../../js/nwtasks.js" th:src="@{/js/nmtasks.js}"></script>
-</div>
+    <div class="footer" th:fragment="footer">
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="../../js/nwtasks.js" th:src="@{/js/nmtasks.js}"></script>
+    </div>
 </body>
+
 </html>

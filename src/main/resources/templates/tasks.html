@@ -1,15 +1,28 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: head('NmTasks Login')"></head>
+
+<head th:replace="fragments :: head('Your Tasks')"></head>
+
 <body>
 
-	<nav th:replace="fragments :: nav"></nav>
-	<div class="content">
-		<div id="message" class="alert alert-info" th:style="${message} != null ? 'display: block' : 'display: none'" th:text="${message}">hello</div>
-	
-	</div>
+    <nav th:replace="fragments :: nav"></nav>
+    <div class="content container">
+        <div id="message" class="alert alert-info" th:text="${message == null ? 'Good evening ' + session.user.name : message}">Welcome</div>
+        <table id="tbl-tasks" data-type="task" class="table table-sm table-hover table-striped table-responsive">
+            <thead class="thead-inverse">
+                <tr>
+                    <th data-col="name"><a href="#" id="btn-th-task"><span class="fa"></span> Task</a></th>
+                    <th data-col="description"><a href="#" id="btn-th-description"><span class="fa fa-sort-desc"></span> Description</a></th>
+                    <th data-col="dueDate"><a href="#" id="btn-th-dueDate"><span class="fa"></span> Due Date</a></th>
+                    <th data-col="completeDate"><a href="#" id="btn-th-completed"><span class="fa"></span> Completed</a></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 
-	<div th:replace="fragments :: footer"></div>
-
+    <div th:replace="fragments :: footer"></div>
+    <script type="text/javascript" src="../../js/task-table.js" th:src="@{/js/task-table.js}"></script>
 </body>
+
 </html>

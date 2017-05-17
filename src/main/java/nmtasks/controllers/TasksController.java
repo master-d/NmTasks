@@ -2,19 +2,18 @@ package nmtasks.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import nmtasks.beans.User;
-import nmtasks.repositories.TaskRepo;
 import nmtasks.repositories.UserRepo;
 import nmtasks.util.NmTasksUtil;
 
@@ -23,23 +22,29 @@ import nmtasks.util.NmTasksUtil;
 public class TasksController {
 	@Autowired
 	private UserRepo userRepo;
-	@Autowired
-	private TaskRepo taskRepo;
 
 	@RequestMapping("/")
 	public String index(Model model) {
 		model.addAttribute("email", "root@localhost");
 		return "login";
 	}
-
-	@ModelAttribute("user")
-	@RequestMapping("/logout")
-	public String logout(Model model) {
-		model.addAttribute("user", null);
-		return "login";
+	
+	@RequestMapping("/tasks")
+	public String tasks(HttpSession session, Model model) {
+		if (session.getAttribute("user") == null) {
+			model.addAttribute("message", "You must be logged in to view this page");
+			return index(model);
+		}
+		else 
+			return "tasks";
 	}
 
-	@ModelAttribute("user")
+	@RequestMapping("/logout")
+	public String logout(SessionStatus status) {
+		status.setComplete();
+		return "redirect:/";
+	}
+
 	@RequestMapping(path= "/login", method=RequestMethod.POST)
 	public String login(@RequestParam(name="email") String email,
 		@RequestParam(name="password") String password,
@@ -60,7 +65,7 @@ public class TasksController {
 					User user = users.get(0);
 					if (user.getPassword().equals(NmTasksUtil.getSHA512Hash(password, user.getSalt()))) {
 						model.addAttribute("user", user);
-						return "tasks";
+						return "redirect:/tasks";
 					} else {
 						model.addAttribute("message", "Invalid password for account '" + email + "'");
 						return "login";
@@ -95,7 +100,7 @@ public class TasksController {
 			userRepo.save(user);
 			model.addAttribute("message","Successfully created account for '" +email + "'");
 			model.addAttribute("user", user);
-			return "tasks";
+			return "redirect:/tasks";
 			} catch (Exception e) {
 				e.printStackTrace();
 				model.addAttribute("message",e.getMessage());

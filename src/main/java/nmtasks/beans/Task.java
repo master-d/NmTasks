@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 public class Task {
 
@@ -21,7 +23,11 @@ public class Task {
   @Column
   private String description;
   @Column
+  @JsonFormat(pattern="M/d/yyyy")
   private Date dueDate;
+  @Column
+  @JsonFormat(pattern="M/d/yyyy")
+  private Date completeDate;
   @Column(name="user_id")
   private long userId;
   @OneToOne
@@ -39,6 +45,8 @@ public class Task {
   public void setDescription(String description) { this.description = description; }
   public Date getDueDate() { return dueDate; }
   public void setDueDate(Date dueDate) { this.dueDate = dueDate; }
+  public Date getCompleteDate() { return completeDate; }
+  public void setCompleteDate(Date completeDate) { this.completeDate = completeDate; }
   public long getUserId() { return userId; }
   public void setUserId(long userId) { this.userId = userId; }
  
