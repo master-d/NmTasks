@@ -47,5 +47,7 @@ jar {
     baseName = 'nmtasks'
     version =  '0.1.0'
 }
-
+bootRun {
+    addResources = true
+}
 //processResources.dependsOn('frontend:build')

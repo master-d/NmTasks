@@ -5,30 +5,34 @@
 
 	<nav th:replace="fragments :: nav"></nav>
 	<div class="content">
-		<div id="login-register" class="container">
-		  	<ul class="navbar-nav">
-		  		<li class="nav-item active">
-		  			<a id="btn-login" href="#">Login</a>
-		  		</li>
-		  		<li class="nav-item">
-		  			<a id="btn-register" href="#">Register</a>
-		  		</li>
-		  	</ul>
-		  	<div id="login">
-		  		<input type="text" name="email" value="" placeholder="Email"/>
-		  		<input type="password" name="password" value="" placeholder="password"/>
-		  		<div class="btn-bar">
-		  			<button class="btn btn-primary btn-block">Login</button>
-		  		</div>
+		<div id="welcome-msg">
+			<h2>Welcome</h2>
+			<div>
+					The NmTasks application has successfully been built and started. 
+					During the startup process, the database schema has been dropped and
+					recreated with a test account.
+					<div class="code">
+						email: 'root@localhost'<br/>
+						password: 'root'
+					</div>
+					You can login to the application using this account or create a new 
+					account by selecting Login->Register from the nav bar above.
+			</div>
+
+		</div>
+
+		<div id="login-register" class="panel">
+			<h2>Login</h2>
+			<div>
+				<form id="form-login">
+					<input type="text" name="email" placeholder="Email"/>
+					<input type="password" name="password" placeholder="Password"/>
+				</form>
+		  	<div class="btn-bar">
+		  		<button id="btn-login" class="btn btn-primary btn-block">Login</button>
+		  		<button id="btn-register" class="btn btn-block">Register</button>						
 		  	</div>
-		  	<div id="register">
-		  		<input type="text" name="name" value="" placeholder="Name"/>
-		  		<input type="text" name="email" value="" placeholder="Email"/>
-		  		<input type="password" name="password" value="" placeholder="Password"/>
-		  		<div class="btn-bar">
-		  			<button class="btn btn-primary btn-block">Register</button>
-		  		</div>
-		  	</div>
+			</div>
 		</div>
 	
 	</div>

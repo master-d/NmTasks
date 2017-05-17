@@ -10,4 +10,5 @@ import nmtasks.beans.User;
 public interface UserRepo extends CrudRepository<User, Long> { 
 
   List<User> findAll();
+  List<User> findByEmail(String email);
 }

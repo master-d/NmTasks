@@ -69,10 +69,10 @@ public class Application {
             // insert test user records using the JPA repositories
             List<User> testUsers = new LinkedList<>();
             User u = new User(1);
-            u.setEmail("raricha@milwaukee.gov");
+            u.setEmail("root@localhost");
             u.setName("Rob");
             u.setSalt("20ufjjJunk");
-            u.setPassword(NmTasksUtil.getSHA512Hash("123", u.getSalt()));
+            u.setPassword(NmTasksUtil.getSHA512Hash("root", u.getSalt()));
             testUsers.add(u);
             userRepo.save(testUsers);
             
