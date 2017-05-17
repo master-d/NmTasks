@@ -36,32 +36,6 @@ public class TasksSvc{
 	}
 
 
-	@RequestMapping(value="/validateLogin",method=RequestMethod.GET)
-	public ResponseEntity<String> validateLogin(String email, String password) {
-		try {
-		List<User> users = userRepo.findByEmail(email);
-		if (users.size() > 0) {
-			// account exists. Check if password matches
-			User user = users.get(0);
-			if (user.getPassword().equals(NmTasksUtil.getSHA512Hash(password, user.getSalt()))) {
-				return new ResponseEntity<>("login accepted", HttpStatus.OK);
-			} else {
-				return new ResponseEntity<>("Invalid password for account '" + email + "'", HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		} else {
-			User user = new User();
-			user.setEmail(email);
-			user.setSalt(NmTasksUtil.generateSalt());
-			user.setPassword(NmTasksUtil.getSHA512Hash(password, user.getSalt()));
-			userRepo.save(user);
-			return new ResponseEntity<>("Account created", HttpStatus.OK);
-		}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
 	@RequestMapping(value="servername", method=RequestMethod.GET)
 	public ResponseEntity<String> convert(){
 		String text = "DUCK";

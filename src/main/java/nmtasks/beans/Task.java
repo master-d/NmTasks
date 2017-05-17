@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 public class Task {
 
   @Id
-  @GeneratedValue(strategy=GenerationType.TABLE)
+  @GeneratedValue(strategy=GenerationType.AUTO)
   private Long id;
   @Column
   private String name;

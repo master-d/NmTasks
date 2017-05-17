@@ -5,7 +5,7 @@
 
 	<nav th:replace="fragments :: nav"></nav>
 	<div class="content">
-		<div id="welcome-msg">
+		<div id="welcome-msg" th:style="${message} == null ? 'display: block' : 'display: none'">
 			<h2>Welcome</h2>
 			<div>
 					The NmTasks application has successfully been built and started. 
@@ -21,17 +21,20 @@
 
 		</div>
 
-		<div id="login-register" class="panel">
+		<div id="login-register" class="panel" th:style="${message} != null ? 'display: block' : 'display: none'">
 			<h2>Login</h2>
 			<div>
-				<form id="form-login">
-					<input type="text" name="email" placeholder="Email"/>
-					<input type="password" name="password" placeholder="Password"/>
+				<div id="message" class="alert alert-danger" th:style="${message} != null ? 'display: block' : 'display: none'" th:text="${message}">hello</div>
+				<form id="form-login" method="POST" action="/login">
+					<input id="inp-email" type="text" name="email" th:value="${email}" placeholder="Email"/>
+					<input id="inp-password" type="password" name="password" placeholder="Password"/>
+					<input id="inp-q" type="hidden" name="q" value="Login"/>
+					<div class="btn-bar">
+						<button id="btn-login" class="btn btn-primary btn-block">Login</button>
+						<button id="btn-register" class="btn btn-block">Register</button>						
+					</div>
 				</form>
-		  	<div class="btn-bar">
-		  		<button id="btn-login" class="btn btn-primary btn-block">Login</button>
-		  		<button id="btn-register" class="btn btn-block">Register</button>						
-		  	</div>
+
 			</div>
 		</div>
 	

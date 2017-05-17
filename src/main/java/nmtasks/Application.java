@@ -68,17 +68,23 @@ public class Application {
             ps.executeUpdate();
             // insert test user records using the JPA repositories
             List<User> testUsers = new LinkedList<>();
-            User u = new User(1);
+            User u = new User();
             u.setEmail("root@localhost");
             u.setName("Rob");
             u.setSalt("20ufjjJunk");
             u.setPassword(NmTasksUtil.getSHA512Hash("root", u.getSalt()));
             testUsers.add(u);
+            User u2 = new User();
+            u2.setEmail("boot@localhost");
+            u2.setName("Bob");
+            u2.setSalt("kefioeojwfj");
+            u2.setPassword(NmTasksUtil.getSHA512Hash("boot", u.getSalt()));
+            testUsers.add(u2);
             userRepo.save(testUsers);
             
             // insert test task records using the JPA repositories
             List<Task> testTasks = new LinkedList<>();
-            Task t = new Task(1);
+            Task t = new Task();
             t.setName("Walk the dog");
             t.setDescription("Walk the dog outside if it's not raining");
             t.setDueDate(new java.util.Date());
