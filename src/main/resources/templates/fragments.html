@@ -28,10 +28,19 @@
                     <a id="btn-logout-nav" class="nav-link" href="/logout"><span class="fa fa-user-circle"></span> Logout</a>
                 </li>
                 <li class="nav-item" th:if="${session.user != null}">
-                    <a id="btn-add-task-nav" class="nav-link" href="#"><span class="fa fa-check-square-o"></span> Show Completed</a>
+                    <select id="select-ci" class="custom-select">
+                        <option value='n'>Incomplete Tasks</option>
+                        <option value='y'>Complete Tasks</option>
+                        <option value=''>All Tasks</option>
+                    </select>
                 </li>
                 <li class="nav-item" th:if="${session.user != null}">
-                    <a id="btn-add-task-nav" class="nav-link" href="#"><span class="fa fa-square-o"></span> Show Incomplete</a>
+                    <form class="form-inline">
+                        <div class="input-group">
+                        <input type="text" id="inp-search" class="form-control" placeholder="Search" aria-describedby="btn-search"/>
+                        <span id="btn-search" class="input-group-addon fa fa-search"></span>
+                        </div>
+                    </form>
                 </li>
             </ul>
         </div>
@@ -42,6 +51,7 @@
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="../../js/data-table.js" th:src="@{/js/data-table.js}"></script>
         <script type="text/javascript" src="../../js/nwtasks.js" th:src="@{/js/nmtasks.js}"></script>
     </div>
 </body>

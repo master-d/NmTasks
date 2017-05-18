@@ -8,7 +8,7 @@
     <nav th:replace="fragments :: nav"></nav>
     <div class="content container">
         <div id="message" class="alert alert-info" th:text="${message == null ? 'Good evening ' + session.user.name : message}">Welcome</div>
-        <table id="tbl-tasks" data-type="task" class="table table-sm table-hover table-striped table-responsive">
+        <table id="tbl-tasks" data-type="task" class="table table-sm table-hover table-striped table-responsive table-bordered">
             <thead class="thead-inverse">
                 <tr>
                     <th data-col="name"><a href="#" id="btn-th-task"><span class="fa"></span> Task</a></th>
@@ -22,7 +22,6 @@
     </div>
 
     <div th:replace="fragments :: footer"></div>
-    <script type="text/javascript" src="../../js/task-table.js" th:src="@{/js/task-table.js}"></script>
 </body>
 
 </html>

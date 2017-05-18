@@ -1,27 +1,30 @@
 package nmtasks.rest;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
+import nmtasks.beans.Message;
 import nmtasks.beans.Task;
 import nmtasks.beans.User;
 import nmtasks.repositories.TaskRepo;
 import nmtasks.repositories.UserRepo;
-import nmtasks.util.NmTasksUtil;
 
 @RestController
 @RequestMapping("/api")
+@SessionAttributes(value="user", types={ User.class })
 public class TasksSvc{
 	@Autowired
 	private UserRepo userRepo;
@@ -31,8 +34,47 @@ public class TasksSvc{
 	TasksSvc() { }
 
 	@RequestMapping(value="/load/task",method=RequestMethod.GET)
-	public List<Task> loadTasks(Pageable pageable, @RequestParam(name="sort") String sort) {
-		return taskRepo.findAll();
+	public Page<Task> loadTasks(Pageable pg,
+		@ModelAttribute(name="user") User user,
+		@RequestParam Map<String,String> params) {
+		System.out.println("User with id " + user.getId() + " loading tasks");
+		Page<Task> tasks;
+		String completed = params.get("complete");
+		String search = params.get("search");
+		if (search == null) {
+			if ("y".equals(completed))
+				tasks = taskRepo.findByUserIdAndCompleteDateIsNotNull(user.getId(), pg);
+			else if ("n".equals(completed))
+				tasks = taskRepo.findByUserIdAndCompleteDateIsNull(user.getId(), pg);
+			else
+				tasks = taskRepo.findByUserId(user.getId(), pg);
+		} else {
+			if ("y".equals(completed))
+				tasks = taskRepo.searchCompletedForUser(user.getId(), search, pg);
+			else if ("n".equals(completed))
+				tasks = taskRepo.searchIncompleteForUser(user.getId(), search, pg);
+			else
+				tasks = taskRepo.searchAllForUser(user.getId(), search, pg);
+		}
+		return tasks;
+	}
+	@RequestMapping(value="/save/task",method=RequestMethod.POST)
+	public Message saveTask(@RequestBody Task task, @ModelAttribute(name="user") User user) {
+		boolean isUpdate = task.getId() != null && task.getId() > 0;
+		task.setUserId(user.getId());
+		taskRepo.save(task);
+		return new Message(true, (isUpdate ? "Updated" : "Inserted") + " task: '" + task.getName() + "'", task.getId());
+	}
+
+	@RequestMapping(value="/delete/task/{id}",method=RequestMethod.DELETE)
+	public Message deleteTask(@PathVariable("id") Long id, @ModelAttribute(name="user") User user) {
+		// retrieve task from the database and make sure it is owned by the logged in user before deleting
+		Task task = taskRepo.findOne(id);
+		if (task.getUserId() == user.getId()) {
+			return new Message(true, "Successfully deleted task: '" + task.getName() + "'", id);
+		} else {
+			return new Message(false, "You don't have rights to delete this task", id);
+		}
 	}
 
 	@RequestMapping(value="/users",method=RequestMethod.GET)
@@ -42,13 +84,6 @@ public class TasksSvc{
 	@RequestMapping(value="/users/{id}",method=RequestMethod.GET)
 	public User getUserById(@PathVariable(name="id") Long id) {
 		return userRepo.findOne(id); 
-	}
-
-
-	@RequestMapping(value="servername", method=RequestMethod.GET)
-	public ResponseEntity<String> convert(){
-		String text = "DUCK";
-		return new ResponseEntity<>(text, HttpStatus.OK);
 	}
 	
 }
