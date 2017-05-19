@@ -35,10 +35,10 @@
                     </select>
                 </li>
                 <li class="nav-item" th:if="${session.user != null}">
-                    <form class="form-inline">
+                    <form id="form-search" class="form-inline">
                         <div class="input-group">
                         <input type="text" id="inp-search" class="form-control" placeholder="Search" aria-describedby="btn-search"/>
-                        <span id="btn-search" class="input-group-addon fa fa-search"></span>
+                        <a href="#" id="btn-search"><span class="input-group-addon fa fa-search"></span></a>
                         </div>
                     </form>
                 </li>

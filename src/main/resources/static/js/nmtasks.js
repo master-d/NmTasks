@@ -4,11 +4,6 @@ $("#btn-login-nav").click(function() {
   $("#login-register").show();
   return false;
 });
-$("#btn-show-complete-nav").click(function() {
-  if ($(this).hasClass("active")) {
-    $(this).removeClass("active").find("span").removeClass("fa-check-square-o").addClass("fa-square-o");
-  }
-});
 $("#btn-login, #btn-register").click(function() {
   $("#inp-q").val($(this).text());
 });
@@ -19,6 +14,10 @@ function searchTasks() {
     search: $("#inp-search").val()
   });
 }
+$("#form-search").submit(function() {
+  searchTasks();
+  return false;
+});
 // tasks page
 if ($("#tbl-tasks").length) {
   taskTable = $("#tbl-tasks").dataTable();

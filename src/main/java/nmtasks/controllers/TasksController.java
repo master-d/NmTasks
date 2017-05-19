@@ -7,12 +7,14 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import groovy.transform.Memoized;
 import nmtasks.beans.User;
 import nmtasks.repositories.UserRepo;
 import nmtasks.util.NmTasksUtil;
@@ -24,16 +26,20 @@ public class TasksController {
 	private UserRepo userRepo;
 
 	@RequestMapping("/")
-	public String index(Model model) {
-		model.addAttribute("email", "root@localhost");
-		return "login";
+	public String index(HttpSession session, Model model) {
+		if (session.getAttribute("user") != null)
+			return "tasks";
+		else {
+			model.addAttribute("email", "root@localhost");
+			return "login";
+		}
 	}
 	
 	@RequestMapping("/tasks")
 	public String tasks(HttpSession session, Model model) {
 		if (session.getAttribute("user") == null) {
 			model.addAttribute("message", "You must be logged in to view this page");
-			return index(model);
+			return index(session, model);
 		}
 		else 
 			return "tasks";

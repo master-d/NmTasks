@@ -9,12 +9,12 @@
     <div class="content container">
         <div id="message" class="alert alert-info" th:text="${message == null ? 'Good evening ' + session.user.name : message}">Welcome</div>
         <table id="tbl-tasks" data-type="task" class="table table-sm table-hover table-striped table-responsive table-bordered">
-            <thead class="thead-inverse">
+            <thead class="blue-gradient">
                 <tr>
-                    <th data-col="name"><a href="#" id="btn-th-task"><span class="fa"></span> Task</a></th>
-                    <th data-col="description"><a href="#" id="btn-th-description"><span class="fa fa-sort-desc"></span> Description</a></th>
-                    <th data-col="dueDate"><a href="#" id="btn-th-dueDate"><span class="fa"></span> Due Date</a></th>
-                    <th data-col="completeDate"><a href="#" id="btn-th-completed"><span class="fa"></span> Completed</a></th>
+                    <th data-col="name">Task</th>
+                    <th data-col="description" style="width: 25%">Description</th>
+                    <th data-col="dueDate" data-sort="desc">Due Date</th>
+                    <th data-col="completeDate">Completed</th>
                 </tr>
             </thead>
             <tbody></tbody>

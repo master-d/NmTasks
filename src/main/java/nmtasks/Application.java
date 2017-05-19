@@ -16,6 +16,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import nmtasks.beans.Task;
 import nmtasks.beans.User;
 import nmtasks.repositories.TaskRepo;
@@ -31,6 +33,11 @@ public class Application {
 	private Resource userCreateSql;
 	@Value("classpath:sql/scripts/task-create.sql")
 	private Resource taskCreateSql;
+    @Value("classpath:json/sample-users.json")
+    private Resource sampleUsersJson;
+    @Value("classpath:json/sample-tasks.json")
+    private Resource sampleTasksJson;
+    
 
 	@Autowired
 	private UserRepo userRepo;
@@ -66,30 +73,15 @@ public class Application {
             ps.executeUpdate();
             ps = con.prepareStatement(NmTasksUtil.resourceToString(taskCreateSql));
             ps.executeUpdate();
-            // insert test user records using the JPA repositories
-            List<User> testUsers = new LinkedList<>();
-            User u = new User();
-            u.setEmail("root@localhost");
-            u.setName("Rob");
-            u.setSalt("20ufjjJunk");
-            u.setPassword(NmTasksUtil.getSHA512Hash("root", u.getSalt()));
-            testUsers.add(u);
-            User u2 = new User();
-            u2.setEmail("boot@localhost");
-            u2.setName("Bob");
-            u2.setSalt("kefioeojwfj");
-            u2.setPassword(NmTasksUtil.getSHA512Hash("boot", u.getSalt()));
-            testUsers.add(u2);
+            // insert test user records from the sample json files
+            ObjectMapper mapper = new ObjectMapper();
+            List<User> testUsers = mapper.readValue(NmTasksUtil.resourceToString(sampleUsersJson), 
+            mapper.getTypeFactory().constructCollectionType(List.class, User.class));
             userRepo.save(testUsers);
             
             // insert test task records using the JPA repositories
-            List<Task> testTasks = new LinkedList<>();
-            Task t = new Task();
-            t.setName("Walk the dog");
-            t.setDescription("Walk the dog outside if it's not raining");
-            t.setDueDate(new java.util.Date());
-            t.setUserId(1);
-            testTasks.add(t);
+            List<Task> testTasks = mapper.readValue(NmTasksUtil.resourceToString(sampleTasksJson), 
+            mapper.getTypeFactory().constructCollectionType(List.class, Task.class));
             taskRepo.save(testTasks);
 
             System.out.println("Sucessfully created tables and inserted test records");

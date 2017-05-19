@@ -1,0 +1,12 @@
+[
+  {"id":1,
+  "name":"root",
+  "email":"root@localhost",
+  "password":"4SOGKlM9jA0npAAl/hjjvXOCnF5vdoe3B0/71diSjimnABx9nvPrImyeKuMOBLeuN9X9k0O0ZSqaXuLcWq4s7A==",
+  "salt":"20ufjjJunk"},
+  {"id":2,
+  "name":"Rob",
+  "email":"rob@localhost",
+  "password":"4SOGKlM9jA0npAAl/hjjvXOCnF5vdoe3B0/71diSjimnABx9nvPrImyeKuMOBLeuN9X9k0O0ZSqaXuLcWq4s7A==",
+  "salt":"20ufjjJunk"}
+]

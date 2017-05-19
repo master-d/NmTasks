@@ -22,7 +22,7 @@
 		</div>
 
 		<div id="login-register" class="panel" th:style="${message} != null ? 'display: block' : 'display: none'">
-			<h2>Login</h2>
+			<h2 class="blue-gradient">Login</h2>
 			<div>
 				<div id="message" class="alert alert-danger" th:style="${message} != null ? 'display: block' : 'display: none'" th:text="${message}">hello</div>
 				<form id="form-login" method="POST" action="/login">

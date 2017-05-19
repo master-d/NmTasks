@@ -43,6 +43,8 @@ div.panel {
 
 div.panel h2 {
     padding: 0px 1rem 1rem 1rem;
+}
+.blue-gradient {
     background: #3f3f53;
     background: -moz-linear-gradient(top, #3f3f53 0%, #000000 100%);
     background: -webkit-linear-gradient(top, #3f3f53 0%, #000000 100%);
@@ -53,7 +55,13 @@ div.panel h2 {
 div.panel>div {
     padding: 1rem;
 }
-
+.table th a {
+    color: #CCC;
+}
+.table th a:HOVER {
+    color: white;
+    text-decoration: none;
+}
 div.btn-bar {
     margin-top: 1rem;
 }
