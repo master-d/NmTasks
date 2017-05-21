@@ -7,7 +7,8 @@
             sort: "",
             rpp: 5,
             baseUrl: "/api",
-            messageDiv: "message"
+            messageDiv: "message",
+            onDataLoad: function() { }
         }, options);
 
         var crud = {
@@ -32,6 +33,7 @@
                             var tr = this.crud.createTrFromObj(data.content[x]);
                             tbody.append(tr);
                         }
+                        this.crud.opts.onDataLoad();
                     }).fail(function(xhr) {
                         this.crud.writeMessage({ success: false, msg: xhr.responseText });
                     });
@@ -48,7 +50,7 @@
                     id: $(tr).data("id")
                 }
                 for (var x=0; x<this.opts.ths.length; x++) {
-                    getData[this.opts.ths[x]] = $(tds[x]).text();
+                    getData[this.opts.ths[x].col] = $(tds[x]).text();
                 }
 
                 $.ajax({
@@ -86,25 +88,6 @@
                     tr.fadeOut();
                 }
             },
-            markComplete: function(tr) {
-                var id = tr.data("id");
-                if (id) {
-                    $.ajax({
-                        method: "GET",
-                        url: opts.baseUrl + "/mark-complete/" + opts.type + "/" + id,
-                        crud: this,
-                        tr: tr
-                    }).done(function(data) {
-                        this.crud.writeMessage(data);
-                        if (data.success && $("#select-ci").val() == "n")
-                            this.tr.fadeOut();
-                    }).fail(function(xhr) {
-                        this.crud.writeMessage({ success: false, msg: xhr.responseText });
-                    });
-                } else {
-                    tr.fadeOut();
-                }
-            },
             
             // Creates a table row (tr) from a javascript object and returns it
             createTrFromObj: function(obj) {
@@ -112,8 +95,15 @@
                 tr.data("id", obj.id);
                 var ths = this.opts.ths;
                 for (var y = 0; y < ths.length; y++) {
-                    var value = obj[ths[y]] ? obj[ths[y]] : "";
-                    var td = $("<td contenteditable='true'>" + value + "</td>");
+                    var value = obj[ths[y].col] ? obj[ths[y].col] : "";
+                    var input;
+                    if (ths[y].type == "cb") {
+                        input = $("<input type='checkbox'/>");
+                        input.prop('checked', value == 'y' || value == 'true');
+                    } else {
+                        input = $("<div contenteditable='true'>" + value + "</div>");
+                    }
+                    var td = $("<td></td>").append(input);
                     tr.append(td);
                 }
                 tr.append(this.createButtonsTd());
@@ -121,15 +111,13 @@
             },
             // create a td element containing save and delete buttons
             createButtonsTd: function() {
-                // MARK COMPLETE SHOULD BE REMOVED IN ORDER TO CONVERT THIS INTO A PROPER PLUGIN
                 return $("<td style='white-space: nowrap'>")
-                    .append("<a href='#' class='btn btn-primary btn-mark-complete'><span class='fa fa-check' title='Mark complete'></span></a> ")
                     .append("<a href='#' class='btn btn-primary btn-save'><span class='fa fa-save' title='Save'></span></a> ")
                     .append("<a href='#' class='btn btn-primary btn-delete'><span class='fa fa-trash-o' title='Delete'></span></a></td>");
             },
             // write a message to the page in this.opts.messageDiv
             writeMessage(msg) {
-                $("#" +this.opts.messageDiv).removeClass().addClass("alert " + (msg.success ? "alert-info" : "alert-danger")).text(msg.msg + (msg.id ? " id:" + msg.id : ""));
+                $("#" +this.opts.messageDiv).removeClass().addClass("alert " + (msg.success ? "alert-info" : "alert-danger")).html(msg.msg + (msg.id ? " id:" + msg.id : ""));
             },
             getSortParameter() {
                 var th = this.tbl.find("th:has(span.fa-sort-desc), th:has(span.fa-sort-asc)");
@@ -144,11 +132,13 @@
             // store all th data-col attributes in opts.ths
             for (var x = 0; x < ths.length; x++) {
                 var th = $(ths[x]);
-                opts.ths.push(th.data("col"));
+                opts.ths.push({ col: th.data("col"), type: th.data("type") });
                 // add links to ths to allow sorting by column
-                var sort = th.data("sort");
-                var a = $("<a href='#'><span class='fa " + (sort ? "fa-sort-"+sort : "") +"'></span> " + th.text() + "</a>");
-                th.html(a);
+                if (th.data("col")) {
+                    var sort = th.data("sort");
+                    var a = $("<a href='#'><span class='fa " + (sort ? "fa-sort-"+sort : "") +"'></span> " + th.text() + "</a>");
+                    th.html(a);
+                }
             }
 
             // add extra th for buttons
@@ -190,7 +180,7 @@
             $(this).find("tfoot .btn-add").click(function() {
                 var tr = crud.createTrFromObj({ id: 0 });
                 this.tbl.append(tr);
-                tr.find("td:eq(0)").focus();
+                tr.find("div[contenteditable]:eq(0)").focus();
                 return false;
             }.bind(crud));
             // previous page

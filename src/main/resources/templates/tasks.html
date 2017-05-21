@@ -7,10 +7,11 @@
 
     <nav th:replace="fragments :: nav"></nav>
     <div class="content container">
-        <div id="message" class="alert alert-info" th:text="${message == null ? 'Good evening ' + session.user.name : message}">Welcome</div>
+        <div id="message" class="alert alert-info" th:text="${message == null ? 'Good evening ' + session.user.email : message}">Welcome</div>
         <table id="tbl-tasks" data-type="task" class="table table-sm table-hover table-striped table-responsive table-bordered">
             <thead class="blue-gradient">
                 <tr>
+                    <th data-type="cb"><input type="checkbox" id="cb-select-all"/></th>
                     <th data-col="name">Task</th>
                     <th data-col="description" style="width: 25%">Description</th>
                     <th data-col="dueDate" data-sort="desc">Due Date</th>

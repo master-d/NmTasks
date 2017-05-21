@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -86,17 +86,21 @@ public class TasksSvc{
 		}
 	}
 
-	@RequestMapping(value="/mark-complete/task/{taskid}",method=RequestMethod.GET)
-	public Message markComplete(@PathVariable("taskid") Long id, @ModelAttribute(name="user") User user) {
+	@RequestMapping(value="/mark-complete/task",method=RequestMethod.GET)
+	public Message markComplete(@RequestParam("ids[]") Long[] ids, @ModelAttribute(name="user") User user) {
+		StringBuilder msg = new StringBuilder();
+		int updateCount = 0;
 		// retrieve task from the database and make sure it is owned by the logged in user before deleting
-		Task task = taskRepo.findOne(id);
-		System.out.println("Task user id: " + task.getUserId() + " session user id: " + user.getId() + ":" + user.getEmail());
-		if (task.getUserId() == user.getId()) {
-			taskRepo.markComplete(new java.util.Date(), id);
-			return new Message(true, "Successfully marked task '" + task.getName() + "' complete", id);
-		} else {
-			return new Message(false, "You don't have rights to mark this task complete", id);
+		for (Long id: ids) {
+			Task task = taskRepo.findOne(id);
+			if (task.getUserId() == user.getId()) {
+				updateCount += taskRepo.markComplete(new java.util.Date(), id);
+				msg.append("Successfully marked task '"+ id + ":" + task.getName() + "' complete<br/>");
+			} else {
+				msg.append("You don't have rights to mark task id #" + id + " complete<br/>");
+			}
 		}
+		return new Message(updateCount == ids.length, msg.toString());
 	}
 
 	@RequestMapping(value="/users",method=RequestMethod.GET)
