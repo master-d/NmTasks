@@ -19,3 +19,6 @@ USER_ID INT(11) not null,
 PRIMARY KEY (ID),
 FOREIGN KEY (USER_ID) REFERENCES user(ID) ON DELETE CASCADE
 );
+
+insert into user(ID,NAME,EMAIL,PASSWORD,SALT) 
+values(1,null,'root@localhost','4SOGKlM9jA0npAAl/hjjvXOCnF5vdoe3B0/71diSjimnABx9nvPrImyeKuMOBLeuN9X9k0O0ZSqaXuLcWq4s7A==','20ufjjJunk');

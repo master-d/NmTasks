@@ -22,9 +22,11 @@ import nmtasks.util.NmTasksUtil;
 @Controller
 @SessionAttributes(value="user", types={ User.class })
 public class TasksController {
-	@Autowired
+
 	private UserRepo userRepo;
 
+	@Autowired
+	public TasksController(UserRepo userRepo) { this.userRepo = userRepo; }
 	@RequestMapping("/")
 	public String index(HttpSession session, Model model) {
 		if (session.getAttribute("user") != null)
