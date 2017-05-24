@@ -100,15 +100,22 @@ public class TasksController {
 				return "login";
 			} 
 			try {
-			// create a new
-			User user = new User();
-			user.setEmail(email);
-			user.setSalt(NmTasksUtil.generateSalt());
-			user.setPassword(NmTasksUtil.getSHA512Hash(password, user.getSalt()));
-			userRepo.save(user);
-			model.addAttribute("message","Successfully created account for '" +email + "'");
-			model.addAttribute("user", user);
-			return "redirect:/tasks";
+				// check if the email has already registered
+				List<User> users = userRepo.findByEmail(email);
+				if (users.size() > 0) {
+					model.addAttribute("message","Unable to register because an account already exists for '" + email + "'");
+					return "login";					
+				} else {
+					// create a new
+					User user = new User();
+					user.setEmail(email);
+					user.setSalt(NmTasksUtil.generateSalt());
+					user.setPassword(NmTasksUtil.getSHA512Hash(password, user.getSalt()));
+					userRepo.save(user);
+					model.addAttribute("message","Successfully created account for '" +email + "'");
+					model.addAttribute("user", user);
+					return "redirect:/tasks";
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				model.addAttribute("message",e.getMessage());
