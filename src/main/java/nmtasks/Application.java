@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -85,6 +85,9 @@ public class Application {
             taskRepo.save(testTasks);
 
             System.out.println("Sucessfully created tables and inserted test records");
+//            BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
+//            System.out.println("bcrypt:" + pe.encode("root"));
+
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("ERROR: reset-db: " + e.getMessage());

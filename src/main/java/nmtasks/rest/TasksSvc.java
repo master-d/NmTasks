@@ -1,14 +1,14 @@
 package nmtasks.rest;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +29,7 @@ import nmtasks.repositories.UserRepo;
 public class TasksSvc{
 	private UserRepo userRepo;
 	private TaskRepo taskRepo;
+
 	@Autowired
 	public TasksSvc(UserRepo userRepo, TaskRepo taskRepo) {
 		this.userRepo = userRepo;
@@ -37,8 +38,8 @@ public class TasksSvc{
 
 	@RequestMapping(value="/load/task",method=RequestMethod.GET)
 	public Page<Task> loadTasks(Pageable pg,
-		@ModelAttribute(name="user") User user,
-		@RequestParam Map<String,String> params) {
+		@RequestParam Map<String,String> params, Principal principal) {
+		User user = getUserFromPrincipal(principal);
 
 		System.out.println("User with id " + user.getId() + " loading tasks");
 		Page<Task> tasks;
@@ -62,7 +63,8 @@ public class TasksSvc{
 		return tasks;
 	}
 	@RequestMapping(value="/save/task",method=RequestMethod.POST)
-	public Message saveTask(@RequestBody Task task, @ModelAttribute(name="user") User user) {
+	public Message saveTask(@RequestBody Task task, Principal principal) {
+		User user = getUserFromPrincipal(principal);
 		boolean isUpdate = task.getId() != null && task.getId() > 0;
 		// make sure the user owns the record before updating it
 		if (isUpdate && taskRepo.findOne(task.getId()).getUserId() != user.getId()) {
@@ -75,7 +77,8 @@ public class TasksSvc{
 	}
 
 	@RequestMapping(value="/delete/task/{taskid}",method=RequestMethod.DELETE)
-	public Message deleteTask(@PathVariable("taskid") Long id, @ModelAttribute(name="user") User user) {
+	public Message deleteTask(@PathVariable("taskid") Long id, Principal principal) {
+		User user = getUserFromPrincipal(principal);
 		// retrieve task from the database and make sure it is owned by the logged in user before deleting
 		Task task = taskRepo.findOne(id);
 		if (task.getUserId() == user.getId()) {
@@ -87,7 +90,8 @@ public class TasksSvc{
 	}
 
 	@RequestMapping(value="/mark-complete/task",method=RequestMethod.GET)
-	public Message markComplete(@RequestParam("ids[]") Long[] ids, @ModelAttribute(name="user") User user) {
+	public Message markComplete(@RequestParam("ids[]") Long[] ids, Principal principal) {
+		User user = getUserFromPrincipal(principal);
 		StringBuilder msg = new StringBuilder();
 		int updateCount = 0;
 		// retrieve task from the database and make sure it is owned by the logged in user before deleting
@@ -112,4 +116,13 @@ public class TasksSvc{
 		return userRepo.findOne(id); 
 	}
 	
+	private User getUserFromPrincipal(Principal principal) {
+		String email = principal == null ? null : principal.getName();
+		List<User> users = this.userRepo.findByEmail(email);
+		if (users.size() == 0 || email == null)
+			throw new UsernameNotFoundException(email);
+		else
+			return users.get(0); 
+	}
+
 }

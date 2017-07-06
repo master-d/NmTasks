@@ -2,11 +2,11 @@
   {"id":1,
   "name":"root",
   "email":"root@localhost",
-  "password":"4SOGKlM9jA0npAAl/hjjvXOCnF5vdoe3B0/71diSjimnABx9nvPrImyeKuMOBLeuN9X9k0O0ZSqaXuLcWq4s7A==",
-  "salt":"20ufjjJunk"},
+  "password":"$2a$10$vSJdTzlX398NUcveCDa9wO2I39/RkTtfy/UR8REq/RVDlGHRIQ/iS"
+  },
   {"id":2,
   "name":"Rob",
   "email":"rob@localhost",
-  "password":"4SOGKlM9jA0npAAl/hjjvXOCnF5vdoe3B0/71diSjimnABx9nvPrImyeKuMOBLeuN9X9k0O0ZSqaXuLcWq4s7A==",
-  "salt":"elkjo2438FF"}
+  "password":"$2a$10$vSJdTzlX398NUcveCDa9wO2I39/RkTtfy/UR8REq/RVDlGHRIQ/iS"
+  }
 ]

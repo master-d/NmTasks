@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -54,8 +55,8 @@ public class TasksControllerTest {
   // test doesn't work. probably need to mock the controller directly to get it to work
   @Test
   public void login() throws Exception {
-    mockuser.setSalt("20ufjjJunk");
-    mockuser.setPassword(NmTasksUtil.getSHA512Hash("root", mockuser.getSalt()));
+    BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
+    mockuser.setPassword(pe.encode("root"));
     Mockito.when(userRepo.findByEmail(Matchers.anyString())).thenReturn(Collections.singletonList(mockuser));
 
     mockMvc.perform(MockMvcRequestBuilders.post("/").param("email", "root@localhost").param("password", "root"))

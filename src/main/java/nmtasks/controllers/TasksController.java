@@ -5,25 +5,25 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import groovy.transform.Memoized;
 import nmtasks.beans.User;
 import nmtasks.repositories.UserRepo;
-import nmtasks.util.NmTasksUtil;
 
 @Controller
 @SessionAttributes(value="user", types={ User.class })
 public class TasksController {
 
 	private UserRepo userRepo;
+
+	private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@Autowired
 	public TasksController(UserRepo userRepo) { this.userRepo = userRepo; }
@@ -71,7 +71,7 @@ public class TasksController {
 				if (users.size() > 0) {
 					// account exists. Check if password matches
 					User user = users.get(0);
-					if (user.getPassword().equals(NmTasksUtil.getSHA512Hash(password, user.getSalt()))) {
+					if (passwordEncoder.matches(password, user.getPassword())) {
 						model.addAttribute("user", user);
 						return "redirect:/tasks";
 					} else {
@@ -109,8 +109,7 @@ public class TasksController {
 					// create a new
 					User user = new User();
 					user.setEmail(email);
-					user.setSalt(NmTasksUtil.generateSalt());
-					user.setPassword(NmTasksUtil.getSHA512Hash(password, user.getSalt()));
+					user.setPassword(passwordEncoder.encode(password));
 					userRepo.save(user);
 					model.addAttribute("message","Successfully created account for '" +email + "'");
 					model.addAttribute("user", user);

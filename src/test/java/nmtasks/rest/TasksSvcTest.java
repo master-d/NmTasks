@@ -153,7 +153,6 @@ public void loadAllTasksForUserWithSearchQuery_givenTasksExist() {
     user.setEmail("mock-email");
     user.setName("mock-name");
     user.setPassword("mock-password");
-    user.setSalt("mock-salt");
 
     Mockito.when(userRepo.findAll()).thenReturn(Collections.singletonList(user));
 
@@ -162,7 +161,6 @@ public void loadAllTasksForUserWithSearchQuery_givenTasksExist() {
     Assert.assertEquals(user.getEmail(), returnedUser.get(0).getEmail());
     Assert.assertEquals(user.getName(), returnedUser.get(0).getName());
     Assert.assertEquals(user.getPassword(), returnedUser.get(0).getPassword());
-    Assert.assertEquals(user.getSalt(), returnedUser.get(0).getSalt());
 
   }
 

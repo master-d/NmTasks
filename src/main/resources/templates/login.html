@@ -5,7 +5,8 @@
 
 	<nav th:replace="fragments :: nav"></nav>
 	<div class="content">
-		<div id="welcome-msg" th:style="${message} == null ? 'display: block' : 'display: none'">
+		<div th:text="${message}">hello</div>
+		<div id="welcome-msg" th:style="${param.logout} == null and ${param.unauthorized} == null ? 'display: block' : 'display: none'">
 			<h2>Welcome</h2>
 			<div>
 					The NmTasks application has successfully been built and started. 
@@ -21,10 +22,14 @@
 
 		</div>
 
-		<div id="login-register" class="panel" th:style="${message} != null ? 'display: block' : 'display: none'">
+		<div id="login-register" class="panel" th:style="${param.logout} != null or ${param.unauthorized} != null ? 'display: block' : 'display: none'">
 			<h2 class="blue-gradient">Login</h2>
 			<div>
-				<div id="message" class="alert alert-danger" th:style="${message} != null ? 'display: block' : 'display: none'" th:text="${message}">hello</div>
+				<div id="message" class="alert alert-danger" 
+				th:style="${param.logout} != null or ${param.unauthorized} != null ? 'display: block' : 'display: none'" 
+				th:text="${param.logout} != null ? 'Successfully logged out' : 'Invalid email or password'">
+					hello
+				</div>
 				<form id="form-login" method="POST" action="/login">
 					<input id="inp-email" type="text" name="email" th:value="${email}" placeholder="Email"/>
 					<input id="inp-password" type="password" name="password" placeholder="Password"/>
