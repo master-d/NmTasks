@@ -1,7 +1,5 @@
-
-steps:
--name: "gcr.io/cloud-builders/gradle"
-  args: ["clean","build"]
-- name: "gcr.io/cloud-builders/gcloud"
-  args: ["app", "deploy"]
-timeout: "1600s"
+- name: 'gcr.io/cloud-builders/gradle'
+ args: ['clean','build']
+- name: 'gcr.io/cloud-builders/gcloud'
+ args: ['app', 'deploy', 'build/exploded-bu-master-service/WEB-INF/appengine-web.xml']
+timeout: '1600s'
